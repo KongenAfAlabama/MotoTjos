@@ -172,6 +172,8 @@ class AudioManager {
   constructor() {
     this.enabled = true;
     this.musicLoaded = false;
+    this.pendingAutoplay = false;
+    this.hasInteracted = false;
     this.musicPath = "assets/mototjos-song.mp3";
     this.music = null;
     this.setupMusic();
@@ -182,27 +184,48 @@ class AudioManager {
     audio.loop = true;
     audio.preload = "auto";
     audio.volume = 0.4;
+    audio.playsInline = true;
+    audio.setAttribute("playsinline", "");
+    audio.setAttribute("webkit-playsinline", "");
 
-    audio.addEventListener("canplaythrough", () => {
+    audio.addEventListener("loadeddata", () => {
       this.musicLoaded = true;
+      if (this.pendingAutoplay && this.enabled) {
+        this.startMusic();
+      }
     });
 
     audio.addEventListener("error", () => {
       this.musicLoaded = false;
+      this.pendingAutoplay = false;
     });
 
     this.music = audio;
   }
 
+  prime() {
+    if (!this.music) {
+      return;
+    }
+
+    this.hasInteracted = true;
+    this.music.load();
+  }
+
   async startMusic() {
-    if (!this.enabled || !this.musicLoaded || !this.music) {
+    if (!this.enabled || !this.music) {
       return false;
     }
 
+    this.prime();
+
     try {
       await this.music.play();
+      this.pendingAutoplay = false;
+      this.musicLoaded = true;
       return true;
     } catch (error) {
+      this.pendingAutoplay = true;
       return false;
     }
   }
@@ -210,6 +233,7 @@ class AudioManager {
   stopMusic() {
     if (this.music) {
       this.music.pause();
+      this.pendingAutoplay = false;
     }
   }
 
@@ -341,6 +365,13 @@ class Game {
     this.syncPreview();
     this.updateSoundButton();
     this.updateUI();
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        this.audio.stopMusic();
+      } else if (this.state === "playing" && this.audio.enabled && this.audio.hasInteracted) {
+        this.audio.startMusic();
+      }
+    });
     requestAnimationFrame((time) => this.loop(time));
   }
 
@@ -377,6 +408,9 @@ class Game {
       event.preventDefault();
       this.handleJump();
     });
+    ui.startButton.addEventListener("pointerdown", () => this.audio.prime(), { passive: true });
+    ui.restartButton.addEventListener("pointerdown", () => this.audio.prime(), { passive: true });
+    ui.soundButton.addEventListener("pointerdown", () => this.audio.prime(), { passive: true });
 
     window.addEventListener("keydown", (event) => {
       if (event.code === "Space") {
@@ -462,6 +496,8 @@ class Game {
     let label = "Lyd: Til";
     if (!this.audio.enabled) {
       label = "Lyd: Fra";
+    } else if (this.audio.pendingAutoplay) {
+      label = "Lyd: Starter";
     } else if (!this.audio.musicLoaded) {
       label = "Lyd: Klar";
     }
@@ -636,6 +672,9 @@ class Game {
   update(delta) {
     this.updateParticles(delta);
     this.updateClouds(delta);
+    if (this.audio.pendingAutoplay || !this.audio.musicLoaded) {
+      this.updateSoundButton();
+    }
 
     if (this.statusTimer > 0) {
       this.statusTimer -= delta;

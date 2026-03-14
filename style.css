@@ -23,12 +23,14 @@ body {
   margin: 0;
   min-height: 100%;
   overflow: hidden;
-  font-family: "Trebuchet MS", "Avenir Next", sans-serif;
+  font-family: "Arial Rounded MT Bold", "Trebuchet MS", "Avenir Next", sans-serif;
   color: var(--ink);
   touch-action: manipulation;
   background:
-    radial-gradient(circle at top, rgba(255, 255, 255, 0.65), transparent 35%),
-    linear-gradient(180deg, var(--sky-top), var(--sky-bottom));
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.72), transparent 32%),
+    radial-gradient(circle at 20% 100%, rgba(255, 195, 89, 0.35), transparent 22%),
+    radial-gradient(circle at 85% 30%, rgba(68, 182, 255, 0.28), transparent 18%),
+    linear-gradient(180deg, #a2dcff, #fef7c8 58%, #fff7d9);
 }
 
 body {
@@ -46,15 +48,20 @@ body {
   display: grid;
   grid-template-rows: auto 1fr;
   gap: 14px;
+  position: relative;
 }
 
 .hero-card,
 .game-card {
-  background: var(--panel);
-  border: 4px solid rgba(255, 255, 255, 0.6);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.86)),
+    var(--panel);
+  border: 4px solid rgba(255, 255, 255, 0.72);
   border-radius: 28px;
-  box-shadow: 0 18px 40px var(--shadow);
-  backdrop-filter: blur(6px);
+  box-shadow: 0 22px 55px rgba(22, 48, 71, 0.14);
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
 }
 
 .hero-card {
@@ -62,6 +69,17 @@ body {
   grid-template-columns: 1.3fr 1fr;
   gap: 18px;
   padding: 18px;
+}
+
+.hero-card::before,
+.game-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.66), transparent 30%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.15), transparent 35%);
+  pointer-events: none;
 }
 
 .mobile-only {
@@ -78,6 +96,8 @@ body {
   margin: 4px 0 8px;
   font-size: clamp(2.2rem, 5vw, 4.2rem);
   line-height: 1;
+  letter-spacing: -0.04em;
+  text-shadow: 0 2px 0 rgba(255, 255, 255, 0.5);
 }
 
 .hero-badges {
@@ -105,11 +125,14 @@ body {
 .eyebrow {
   color: var(--green-deep);
   font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .tagline {
-  font-size: 1.05rem;
+  font-size: 1.08rem;
   max-width: 34rem;
+  line-height: 1.35;
 }
 
 .menu-panel {
@@ -138,6 +161,14 @@ body {
   box-shadow: inset 0 0 0 3px rgba(22, 48, 71, 0.08);
 }
 
+.level-select:focus,
+.big-button:focus,
+.jump-button:focus,
+.mini-button:focus {
+  outline: 4px solid rgba(68, 182, 255, 0.28);
+  outline-offset: 2px;
+}
+
 .button-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -150,6 +181,7 @@ body {
   font-size: 1.1rem;
   color: white;
   box-shadow: 0 8px 0 rgba(0, 0, 0, 0.12);
+  transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
 }
 
 .mini-button {
@@ -223,16 +255,22 @@ body {
   gap: 12px;
   padding: 14px;
   min-height: 0;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.82)),
+    rgba(255, 255, 255, 0.88);
 }
 
 .hud {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
 }
 
 .hud-pill {
   backdrop-filter: blur(4px);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.52);
 }
 
 .canvas-wrap {
@@ -240,7 +278,20 @@ body {
   min-height: 0;
   border-radius: 24px;
   overflow: hidden;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.06));
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 255, 255, 0.28),
+    0 14px 30px rgba(22, 48, 71, 0.12);
+}
+
+.canvas-wrap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.12), transparent 16%, transparent 84%, rgba(0, 0, 0, 0.08));
 }
 
 #gameCanvas {
@@ -297,8 +348,11 @@ body {
   padding: 16px 24px;
   font-size: clamp(1.6rem, 3vw, 2.4rem);
   color: white;
-  background: linear-gradient(180deg, #ff6e78, #e14350);
-  box-shadow: 0 10px 0 rgba(0, 0, 0, 0.14);
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.28), transparent 34%),
+    linear-gradient(180deg, #ff6e78, #e14350);
+  box-shadow: 0 10px 0 rgba(0, 0, 0, 0.14), 0 0 0 8px rgba(255, 110, 120, 0.16);
+  animation: jump-pulse 1.8s ease-in-out infinite;
 }
 
 @keyframes pop-in {
@@ -310,6 +364,17 @@ body {
   to {
     transform: scale(1);
     opacity: 1;
+  }
+}
+
+@keyframes jump-pulse {
+  0%,
+  100% {
+    box-shadow: 0 10px 0 rgba(0, 0, 0, 0.14), 0 0 0 0 rgba(255, 110, 120, 0.16);
+  }
+
+  50% {
+    box-shadow: 0 10px 0 rgba(0, 0, 0, 0.14), 0 0 0 10px rgba(255, 110, 120, 0.08);
   }
 }
 
@@ -348,6 +413,9 @@ body {
     max-height: calc(100dvh - 20px);
     overflow: auto;
     display: none;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.92)),
+      rgba(255, 255, 255, 0.92);
   }
 
   .hero-card.menu-open {
@@ -374,6 +442,10 @@ body {
   .hud-pill {
     padding: 7px 12px;
     font-size: 0.92rem;
+  }
+
+  .tagline {
+    font-size: 1rem;
   }
 
   .hero-badges {
@@ -403,5 +475,6 @@ body {
   .jump-button {
     width: 100%;
     min-height: 76px;
+    font-size: 1.9rem;
   }
 }
