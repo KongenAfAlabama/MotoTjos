@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>MotoTjos</title>
+  <meta name="theme-color" content="#2fa84d">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="MotoTjos">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="description" content="MotoTjos er et farverigt og børnevenligt motorcykelspil med Arthur på grøn motocross.">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icon-180.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="hero-card">
+      <div class="hero-copy">
+        <p class="eyebrow">Version 2 • Arthur på grøn motocross!</p>
+        <h1>MotoTjos</h1>
+        <p class="tagline">Tryk på HOP, saml stjerner og kør til mål. Nu med musik, festlige effekter og endnu mere børnevenlig flow.</p>
+        <div class="hero-badges">
+          <span>Meget nemt</span>
+          <span>Touch først</span>
+          <span>Safari på iPad</span>
+        </div>
+      </div>
+
+      <div class="menu-panel">
+        <label class="field-label" for="levelSelect">Vælg bane</label>
+        <select id="levelSelect" class="level-select" aria-label="Vælg bane">
+          <option value="0">1. Jordbane</option>
+          <option value="1">2. Skovbane</option>
+          <option value="2">3. Solbane</option>
+        </select>
+
+        <div class="button-row">
+          <button id="startButton" class="big-button primary">Start</button>
+          <button id="restartButton" class="big-button secondary">Spil igen</button>
+        </div>
+
+        <div class="button-row">
+          <button id="nextLevelButton" class="big-button secondary">Næste bane</button>
+          <button id="soundButton" class="big-button sound-button" aria-pressed="true">Lyd: Til</button>
+        </div>
+
+        <div class="help-strip">
+          <span>Tryk på HOP</span>
+          <span>Saml stjerner</span>
+          <span>Kør til mål</span>
+        </div>
+
+        <div class="preview-card">
+          <div class="preview-badge" id="previewBadge">Blid start</div>
+          <h2 id="previewTitle">Jordbane</h2>
+          <p id="previewText">Rolige bakker, små hop og masser af plads til at lande.</p>
+        </div>
+      </div>
+    </header>
+
+    <main class="game-card">
+      <section class="hud" aria-label="Spilstatus">
+        <div class="hud-pill">Bane: <strong id="hudLevel">Jordbane</strong></div>
+        <div class="hud-pill">Stjerner: <strong id="hudStars">0/6</strong></div>
+        <div class="hud-pill">Bedst: <strong id="hudBest">0</strong></div>
+        <div class="hud-pill">Fremme: <strong id="hudProgress">0%</strong></div>
+        <div class="hud-pill">Status: <strong id="hudStatus">Arthur er klar!</strong></div>
+      </section>
+
+      <div class="canvas-wrap">
+        <canvas id="gameCanvas" width="1280" height="720" aria-label="MotoTjos spilområde"></canvas>
+
+        <div id="overlay" class="overlay show">
+          <div class="overlay-card">
+            <h2 id="overlayTitle">Arthur er klar!</h2>
+            <p id="overlayText">Vælg en bane og tryk på Start.</p>
+          </div>
+        </div>
+      </div>
+
+      <section class="controls" aria-label="Touch knapper">
+        <button id="jumpButton" class="jump-button">HOP</button>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
