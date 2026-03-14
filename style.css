@@ -64,6 +64,16 @@ body {
   padding: 18px;
 }
 
+.mobile-only {
+  display: none;
+}
+
+.menu-topbar {
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
 .hero-copy h1 {
   margin: 4px 0 8px;
   font-size: clamp(2.2rem, 5vw, 4.2rem);
@@ -110,7 +120,8 @@ body {
 
 .level-select,
 .big-button,
-.jump-button {
+.jump-button,
+.mini-button {
   appearance: none;
   border: none;
   border-radius: 20px;
@@ -139,6 +150,15 @@ body {
   font-size: 1.1rem;
   color: white;
   box-shadow: 0 8px 0 rgba(0, 0, 0, 0.12);
+}
+
+.mini-button {
+  min-height: 52px;
+  padding: 10px 18px;
+  font-size: 1rem;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.1);
 }
 
 .big-button:active,
@@ -267,6 +287,7 @@ body {
 
 .controls {
   display: flex;
+  gap: 10px;
   justify-content: center;
 }
 
@@ -303,15 +324,56 @@ body {
 }
 
 @media (max-width: 720px) {
+  body {
+    position: static;
+  }
+
   .app-shell {
     padding: 10px;
     gap: 10px;
+    height: 100dvh;
+    grid-template-rows: 1fr;
   }
 
   .hero-card,
   .game-card {
     border-radius: 22px;
     padding: 12px;
+  }
+
+  .hero-card {
+    position: fixed;
+    inset: 10px 10px auto 10px;
+    z-index: 20;
+    max-height: calc(100dvh - 20px);
+    overflow: auto;
+    display: none;
+  }
+
+  .hero-card.menu-open {
+    display: grid;
+  }
+
+  .mobile-only {
+    display: inline-flex;
+  }
+
+  .menu-topbar.mobile-only {
+    display: flex;
+  }
+
+  .game-card {
+    grid-template-rows: auto 1fr auto;
+    min-height: 0;
+  }
+
+  .hud {
+    gap: 8px;
+  }
+
+  .hud-pill {
+    padding: 7px 12px;
+    font-size: 0.92rem;
   }
 
   .hero-badges {
@@ -323,6 +385,23 @@ body {
   }
 
   #gameCanvas {
-    min-height: 280px;
+    min-height: 0;
+    height: 100%;
+  }
+
+  .canvas-wrap {
+    min-height: 0;
+    height: 100%;
+  }
+
+  .controls {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+  }
+
+  .jump-button {
+    width: 100%;
+    min-height: 76px;
   }
 }

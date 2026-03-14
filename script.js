@@ -8,6 +8,9 @@ const ui = {
   nextLevelButton: document.getElementById("nextLevelButton"),
   soundButton: document.getElementById("soundButton"),
   jumpButton: document.getElementById("jumpButton"),
+  menuButton: document.getElementById("menuButton"),
+  closeMenuButton: document.getElementById("closeMenuButton"),
+  menuPanel: document.getElementById("menuPanel"),
   hudLevel: document.getElementById("hudLevel"),
   hudStars: document.getElementById("hudStars"),
   hudBest: document.getElementById("hudBest"),
@@ -332,6 +335,7 @@ class Game {
     this.statusTimer = 0;
     this.particles = [];
     this.clouds = this.createClouds();
+    this.menuOpen = false;
     this.resizeCanvas();
     this.bindEvents();
     this.syncPreview();
@@ -366,6 +370,8 @@ class Game {
     ui.restartButton.addEventListener("click", () => this.restartLevel());
     ui.nextLevelButton.addEventListener("click", () => this.nextLevel());
     ui.soundButton.addEventListener("click", () => this.toggleSound());
+    ui.menuButton.addEventListener("click", () => this.toggleMenu());
+    ui.closeMenuButton.addEventListener("click", () => this.closeMenu());
     ui.levelSelect.addEventListener("change", () => this.selectLevel(Number(ui.levelSelect.value)));
     ui.jumpButton.addEventListener("pointerdown", (event) => {
       event.preventDefault();
@@ -381,7 +387,7 @@ class Game {
 
     window.addEventListener("resize", () => this.resizeCanvas());
     document.body.addEventListener("touchmove", (event) => {
-      if (this.state === "playing") {
+      if (this.state === "playing" || this.menuOpen) {
         event.preventDefault();
       }
     }, { passive: false });
@@ -407,6 +413,9 @@ class Game {
     this.particles = [];
     this.state = autoStart ? "playing" : "ready";
     this.syncPreview();
+    if (autoStart) {
+      this.closeMenu();
+    }
     this.setOverlay(autoStart ? "" : "Arthur er klar!", autoStart ? "" : this.level.definition.intro);
     this.setStatus(autoStart ? "Arthur kører!" : "Vælg bane og tryk på Start.", 2.6);
     ui.levelSelect.value = String(this.levelIndex);
@@ -432,6 +441,16 @@ class Game {
   nextLevel() {
     this.levelIndex = (this.levelIndex + 1) % levelDefinitions.length;
     this.restartLevel();
+  }
+
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
+    ui.menuPanel.classList.toggle("menu-open", this.menuOpen);
+  }
+
+  closeMenu() {
+    this.menuOpen = false;
+    ui.menuPanel.classList.remove("menu-open");
   }
 
   toggleSound() {

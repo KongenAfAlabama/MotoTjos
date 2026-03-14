@@ -17,7 +17,11 @@
 </head>
 <body>
   <div class="app-shell">
-    <header class="hero-card">
+    <header class="hero-card" id="menuPanel">
+      <div class="menu-topbar mobile-only">
+        <h2>Menu</h2>
+        <button id="closeMenuButton" class="mini-button" type="button">Luk</button>
+      </div>
       <div class="hero-copy">
         <p class="eyebrow">Version 2 • Arthur på grøn motocross!</p>
         <h1>MotoTjos</h1>
@@ -82,6 +86,7 @@
       </div>
 
       <section class="controls" aria-label="Touch knapper">
+        <button id="menuButton" class="mini-button mobile-only" type="button">Menu</button>
         <button id="jumpButton" class="jump-button">HOP</button>
       </section>
     </main>
