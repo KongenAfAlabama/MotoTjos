@@ -450,7 +450,10 @@ class Game {
     if (autoStart) {
       this.closeMenu();
     }
-    this.setOverlay(autoStart ? "" : "Arthur er klar!", autoStart ? "" : this.level.definition.intro);
+    this.setOverlay(
+      autoStart ? "" : "Arthur er klar!",
+      autoStart ? "" : `${this.level.definition.intro} Tryk HOP for at starte eller åbn Menu.`
+    );
     this.setStatus(autoStart ? "Arthur kører!" : "Vælg bane og tryk på Start.", 2.6);
     ui.levelSelect.value = String(this.levelIndex);
     this.updateUI();
